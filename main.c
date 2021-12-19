@@ -28,8 +28,6 @@ int main(){
         j=j+sizeof(char);
         scanf("%c", &str);
     }
-    printf("%s", word);
-    printf("%s\n", txt);
     gematria(word, i, txt, j);
     atbash(word, i, txt, j);
     anagram(word, i, txt, j);
