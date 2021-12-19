@@ -243,6 +243,6 @@ void anagram(char *word, int wlen, char *txt, int tlen){
 
     }
     printf("Anagram Sequences: ");
-    printf("%s\n", res2);
+    printf("%s", res2);
     free(res2);
 }
