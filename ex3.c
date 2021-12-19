@@ -184,9 +184,6 @@ void anagram(char *word, int wlen, char *txt, int tlen){
         }
         else if(cnt==wlen){
             int tmp=sum;
-            if(t == 15){
-                printf("as");
-            }
             for (int i = cnt+space; i > 0 ; --i) {
                 if(isalpha(txt[fl-i])){
                     tmp-=txt[fl-i];
