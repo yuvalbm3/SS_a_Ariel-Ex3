@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define TXT 1024
-
+#define WORD 30
 
 void gematria(char *word, int wlen, char *txt, int tlen){
     char *res = (char*)malloc(sizeof(char) * TXT);
@@ -25,6 +25,9 @@ void gematria(char *word, int wlen, char *txt, int tlen){
     while(flag){
         if( j==tlen || i>tlen){
             flag=0;
+        }
+        else if(wlen==0){
+            break;
         }
         else if(valt < valw){
             if(!isalpha(txt[0]) && first==0){
@@ -112,6 +115,9 @@ void atbash(char *word, int wlen, char *txt, int tlen){
         if(i>tlen-wlen || j>tlen-wlen){
             flag=0;
         }
+        else if(wlen==0){
+            break;
+        }
         else if(k==wlen || r==wlen){
             if(isrev==1){
                 i=j-wlen;
@@ -163,14 +169,33 @@ void atbash(char *word, int wlen, char *txt, int tlen){
     printf("Atbash Sequences: ");
     printf("%s\n", res1);
     free(res1);
+}
 
+int anagram_help(char *word, int wlen, char this){
+    for (int i = 0; i < wlen; ++i) {
+        if(word[i]==this){
+            return 1;
+        }
+    }
+    return 0;
 }
 
 void anagram(char *word, int wlen, char *txt, int tlen){
     char *res2 = (char*)calloc(TXT, sizeof(char));
+    char *wordsign = (char*)calloc(WORD, sizeof (char));
+    int notalpha=0;
+    int nap =0; //not alpha pointer
+    int nap_flag=0;
+    int nap_cnt;
     int sum=0;
     for (int i = 0; i < wlen; ++i) {
         sum+=word[i];
+        if(!isalpha(word[i])){
+            notalpha=1;
+            wordsign[nap]=word[i];
+            nap++;
+            nap_cnt++;
+        }
     }
     int fl=0;
     int t=0;
@@ -182,11 +207,18 @@ void anagram(char *word, int wlen, char *txt, int tlen){
         if(fl>tlen){
             flag=0;
         }
+        else if(wlen==0){
+            break;
+        }
         else if(cnt==wlen){
             int tmp=sum;
             for (int i = cnt+space; i > 0 ; --i) {
                 if(isalpha(txt[fl-i])){
                     tmp-=txt[fl-i];
+                }
+                else if(nap_cnt!=0 && !isalpha(txt[fl-i])){
+                    if(anagram_help(wordsign, nap_cnt, txt[fl-i]))
+                        tmp-=txt[fl-i];
                 }
             }
             if(tmp==0){
@@ -228,11 +260,21 @@ void anagram(char *word, int wlen, char *txt, int tlen){
                 fl++;
             }
         }
-        else if(txt[fl]==' ' && cnt>0){
-            space++;
-            fl++;
+        else if(!isalpha(txt[fl]) && cnt>0){
+            if(txt[fl]==' ' ){
+                space++;
+                fl++;
+            }
+            else if(anagram_help(wordsign, nap_cnt, txt[fl])){
+                cnt++;
+                fl++;
+            }
+            else{
+                fl++;
+            }
         }
         else{
+            nap_flag=0;
             space=0;
             cnt=0;
             fl++;
