@@ -15,5 +15,6 @@ char gematria(char *word, int wlen, char *txt, int tlen);
 char atbash_help(char a);
 char atbash(char *word, int wlen, char *txt, int tlen);
 char anagram(char *word, int wlen, char *txt, int tlen);
+int anagram_help(char *word, int wlen, char this);
 
 #endif //UNTITLED3_EX3_H
